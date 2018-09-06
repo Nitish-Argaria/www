@@ -49,5 +49,47 @@ class Router
   * @param string $url The route URL
   *
   * @return boolean true if a match found, false otherwise
+  */
+  public function match($url)
+  {
+    //echo ($url=="post");
+    /*
+    foreach($this->routes as $route => $params){
+      //echo ($url=="posts");
+      if($url == $route){
+        $this->params = $params;
+        return true;
+      }
+
+    }
+    */
+    $reg_exp = "/^(?P<controller>[a-z-]+)\/(?P<action>[a-z-]+)$/";
+
+    if(preg_match($reg_exp,$url,$matches)){
+      $params = [];
+      //var_dump($matches);
+      foreach($matches as $key => $match)
+      {
+        //var_dump($key);
+        if(is_string($key)){
+          $params[$key] = $match;
+        }
+        $this->params = $params;
+      }
+        //var_dump($params);
+        return true;
+
+    }
+    return false;
+  }
+  /**
+  * Get the currently matche Parameters
+  *
+  * @return array
+  */
+  public function getParams()
+  {
+    return $this->params;
+  }
 
 }
